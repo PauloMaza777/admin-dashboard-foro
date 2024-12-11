@@ -17,7 +17,7 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const AdminDashboard = () => {
-  const [userStats, setUserStats] = useState({ week: 0, month: 0, year: 0 });
+  const [userStats, setUserStats] = useState({ week: 0 });
   const [postsCount, setPostsCount] = useState(0);
   const [postsCount2, setPostsCount2] = useState(0);
 
@@ -26,20 +26,20 @@ const AdminDashboard = () => {
       const now = Timestamp.now();
 
       // Calcular fechas de inicio para la última semana, mes y año
-      const lastWeek = new Timestamp(now.seconds - 7 * 24 * 60 * 60, 0);
-      const lastMonth = new Timestamp(now.seconds - 30 * 24 * 60 * 60, 0);
-      const lastYear = new Timestamp(now.seconds - 365 * 24 * 60 * 60, 0);
+       const lastWeek = new Timestamp(now.seconds - 7 * 24 * 60 * 60, 0);
+      // const lastMonth = new Timestamp(now.seconds - 30 * 24 * 60 * 60, 0);
+      // const lastYear = new Timestamp(now.seconds - 365 * 24 * 60 * 60, 0);
 
       // Obtener el número de usuarios registrados en la última semana, mes y año
-      const weekCount = await getUsersCountByDate(lastWeek);
-      const monthCount = await getUsersCountByDate(lastMonth);
-      const yearCount = await getUsersCountByDate(lastYear);
+       const weekCount = await getUsersCountByDate(lastWeek);
+      // const monthCount = await getUsersCountByDate(lastMonth);
+      // const yearCount = await getUsersCountByDate(lastYear);
 
       // Obtener el número total de publicaciones
       const posts = await getPostsCount();
       const posts2 = await getPostsCount2();
 
-      setUserStats({ week: weekCount, month: monthCount, year: yearCount });
+       setUserStats({ week: weekCount });
       setPostsCount(posts);
       setPostsCount2(posts2);
     };
@@ -49,12 +49,12 @@ const AdminDashboard = () => {
 
   // Datos y opciones para el gráfico de usuarios
   const userData = {
-    labels: ["Última semana", "Último mes", "Último año"],
+    labels: ["Usuarios Registrados"],
     datasets: [
       {
         label: "Usuarios Registrados",
-        data: [userStats.week, userStats.month, userStats.year],
-        backgroundColor: ["#B73AE0", "#F5E3A2", "#F56E1D"],
+        data: [userStats.week],
+        backgroundColor: ["#F5E3A2", "#F5E3A2", "#F56E1D"],
       },
     ],
   };
@@ -100,7 +100,7 @@ const AdminDashboard = () => {
     <div>
       <h1>Administrador - Estadísticas</h1>
 
-      <div style={{ width: "80%", margin: "auto", marginBottom: "40px" }}>
+      <div style={{ width: "50%", margin: "auto", marginBottom: "10px" }}>
         <h3>Usuarios Registrados</h3>
         <Bar data={userData} options={{ ...options, plugins: { ...options.plugins, title: { text: "Usuarios Registrados", display: true }}}}/>
       </div>
